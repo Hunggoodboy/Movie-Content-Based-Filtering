@@ -1,9 +1,10 @@
-package com.movieapp.entity;
+package com.movie.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -22,33 +23,66 @@ public class Movie {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
 
-    // Dùng để TF-IDF vectorize: mô tả nội dung phim
+    // -------------------------------------------------------
+    // Phần 1: TF-IDF đọc — người đăng nhập tự do
+    // -------------------------------------------------------
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(length = 255)
+    @Column(columnDefinition = "TEXT")
     private String director;
 
-    // Danh sách diễn viên, lưu dạng "Nam1, Nam2, Nam3"
-    @Column(columnDefinition = "TEXT")
+    // "Diễn viên 1, Diễn viên 2, Diễn viên 3"
+    @Column(columnDefinition = "TEXT", name = "cast_member")
     private String cast;
 
-    // Từ khóa nội dung: "vũ trụ, anh hùng, tương lai"
+    // "vũ trụ, siêu anh hùng, tương lai"
     @Column(columnDefinition = "TEXT")
     private String keywords;
+
+    // -------------------------------------------------------
+    // Phần 2: One-hot encoder đọc — người đăng chọn từ menu
+    // -------------------------------------------------------
+
+    // "Mỹ", "Hàn Quốc", "Việt Nam", "Nhật Bản"
+    @Column(columnDefinition = "TEXT")
+    private String country;
+
+    // "vi", "en", "ko", "ja"
+    @Column(columnDefinition = "TEXT")
+    private String language;
+
+    // "P", "C13", "C16", "C18"
+    @Column(name = "age_rating", columnDefinition = "TEXT")
+    private String ageRating;
+
+    // -------------------------------------------------------
+    // Thông tin phụ
+    // -------------------------------------------------------
 
     @Column(name = "release_year")
     private Integer releaseYear;
 
-    @Column(name = "poster_url", length = 500)
+    @Column(name = "duration_mins")
+    private Integer durationMins;
+
+    @Column(name = "poster_url", columnDefinition = "TEXT")
     private String posterUrl;
 
-    // Link tới trang ngoài (YouTube, trang giới thiệu...) — không lưu video
-    @Column(name = "external_url", length = 500)
+    @Column(name = "external_url", columnDefinition = "TEXT")
     private String externalUrl;
+
+    // -------------------------------------------------------
+    // Thống kê
+    // -------------------------------------------------------
+
+    @Column(name = "views")
+    @Builder.Default
+    private Long views = 0L;
 
     @Column(name = "avg_rating")
     @Builder.Default
@@ -57,37 +91,79 @@ public class Movie {
     @Column(name = "total_ratings")
     @Builder.Default
     private Integer totalRatings = 0;
+    // -------------------------------------------------------
+    // termSet dùng để lưu xem phim này chứa từ gì
+    // -------------------------------------------------------
+
+    @Column(name = "term_set", columnDefinition = "TEXT")
+    private String termSet;
+
+    // -------------------------------------------------------
+    // Timestamp
+    // -------------------------------------------------------
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // Quan hệ nhiều-nhiều với Genre qua bảng movie_genres
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    // -------------------------------------------------------
+    // Quan hệ
+    // -------------------------------------------------------
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-        name = "movie_genres",
-        joinColumns = @JoinColumn(name = "movie_id"),
-        inverseJoinColumns = @JoinColumn(name = "genre_id")
+            name = "movie_genres",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     @Builder.Default
     private Set<Genre> genres = new HashSet<>();
 
-    // Quan hệ 1-1 với vector (load lazy, chỉ khi cần recommend)
     @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private MovieVector vector;
+
+    // -------------------------------------------------------
+    // Lifecycle
+    // -------------------------------------------------------
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
-    // Helper: ghép toàn bộ text để TF-IDF đọc
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    // -------------------------------------------------------
+    // Helper cho TF-IDF
+    // Chỉ ghép phần tự do — KHÔNG có country/language/ageRating
+    // vì chúng đã được One-hot encoder xử lý riêng
+    // -------------------------------------------------------
     public String toFeatureText() {
         StringBuilder sb = new StringBuilder();
         if (description != null) sb.append(description).append(" ");
         if (director != null)    sb.append(director).append(" ");
         if (cast != null)        sb.append(cast.replace(",", " ")).append(" ");
         if (keywords != null)    sb.append(keywords.replace(",", " ")).append(" ");
-        genres.forEach(g -> sb.append(g.getName()).append(" "));
         return sb.toString().toLowerCase().trim();
     }
+
+    //termSet cho phim
+    public void buildTermSet() {
+        String[] tokens = this.toFeatureText().split("\\s+");
+        this.termSet = String.join(",", new HashSet<>(Arrays.asList(tokens)));
+    }
+
+    //chuyển từ termSet thành Set
+
+    public Set<String> getTermSet() {
+        if (termSet == null || termSet.isBlank()) return new HashSet<>();
+        return new HashSet<>(Arrays.asList(termSet.split(",")));
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.movieapp.entity;
+package com.movie.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +19,4 @@ public class Genre {
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 50)
-    private String slug;
 }

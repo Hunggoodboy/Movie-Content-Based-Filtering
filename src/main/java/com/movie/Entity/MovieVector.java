@@ -1,5 +1,6 @@
-package com.movieapp.entity;
+package com.movie.Entity;
 
+import com.movie.Config.VectorType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,8 +26,9 @@ public class MovieVector {
     private Movie movie;
 
     // Vector TF-IDF đã tính sẵn, lưu dạng JSON: [0.12, 0.05, 0.87, ...]
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String vector;
+    @Column(columnDefinition = "vector(384)", nullable = false)
+    @org.hibernate.annotations.Type(VectorType.class)
+    private float[] vector;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

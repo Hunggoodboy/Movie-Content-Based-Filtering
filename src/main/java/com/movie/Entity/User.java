@@ -1,4 +1,4 @@
-package com.movieapp.entity;
+package com.movie.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +19,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
     private UUID id;
+    @Column(name = "username", updatable = false, nullable = false)
+    private String username;
 
     @Column(nullable = false, unique = true, length = 255)
     private String email;
@@ -31,9 +33,13 @@ public class User {
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
-
+    @Column(name = "role")
+    private String role = "USER";
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserVector vector;
 }
