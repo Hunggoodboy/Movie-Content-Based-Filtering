@@ -1,4 +1,4 @@
-package com.movie.Config;
+package com.movie.Filter;
 
 import com.movie.DTO.Response.UserResponse;
 import com.movie.Service.Authentication.JwtService;

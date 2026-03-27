@@ -14,8 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MovieVector {
-
+public class MovieVector{
     // Dùng chung khóa với Movie — 1 phim có đúng 1 vector
     @Id
     private UUID movieId;

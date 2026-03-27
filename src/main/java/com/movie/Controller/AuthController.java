@@ -26,7 +26,6 @@ public class AuthController {
 
     private final AuthService authService;
     private final UserVectorService  userVectorService;
-    private final JwtService  jwtService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticaionResponse> login(@RequestBody LoginRequest loginRequest) throws JOSEException {
@@ -40,9 +39,6 @@ public class AuthController {
 
     @PostMapping("/my-favourite")
     public ResponseEntity<?> myFavourite(@RequestBody FavouriteMovieRequest request, @RequestHeader("Authorization") String authAhead) throws JOSEException, ParseException {
-        System.out.println(authAhead);
-        String token = authAhead.substring(7);
-        UUID userId = UUID.fromString(jwtService.findUser(token).getUserId());
-        return ResponseEntity.ok(userVectorService.buildUserVector(request, userId));
+        return ResponseEntity.ok(userVectorService.buildUserVector(request, authAhead));
     }
 }

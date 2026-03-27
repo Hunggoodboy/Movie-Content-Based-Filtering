@@ -55,7 +55,8 @@ public class JwtService {
     }
 
     //Lấy userId và Role từ Token
-    public UserResponse findUser(String token) throws ParseException, JOSEException {
+    public UserResponse findUser(String authHeader) throws ParseException, JOSEException {
+        String token = authHeader.substring(7);
         IntrospectRequest introspectRequest = IntrospectRequest.builder().token(token).build();
         if(!introspect(introspectRequest).isValid()){
             throw new RuntimeException("Tài khoản không hợp lệ");
