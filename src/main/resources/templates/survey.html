@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khảo sát sở thích phim</title>
+    <link rel="stylesheet" href="/css/survey.css">
+</head>
+<body>
+<div class="survey-container">
+    <h2>Chào mừng! Hãy cho chúng tôi biết sở thích của bạn 🎬</h2>
+    <p class="subtitle">Điều này giúp hệ thống gợi ý những bộ phim tuyệt vời nhất dành riêng cho bạn.</p>
+
+    <div class="section">
+        <h3>Thể loại yêu thích (Chọn nhiều)</h3>
+        <div class="chip-group" id="genres-group">
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Quốc gia (Chọn nhiều)</h3>
+        <div class="chip-group" id="countries-group"></div>
+    </div>
+
+    <div class="section">
+        <h3>Ngôn ngữ (Chọn nhiều)</h3>
+        <div class="chip-group" id="languages-group"></div>
+    </div>
+
+    <div class="section">
+        <h3>Độ tuổi hiển thị (Chọn 1)</h3>
+        <div class="chip-group" id="age-group"></div>
+    </div>
+
+    <div class="section">
+        <h3>Ghi chú thêm (Không bắt buộc)</h3>
+        <textarea id="survey-description" placeholder="Ví dụ: Tôi đặc biệt thích phim có plot twist..."></textarea>
+    </div>
+
+    <button id="btn-submit" class="submit-btn">Hoàn tất & Khám phá phim</button>
+</div>
+
+<script src="/js/survey.js"></script>
+</body>
+</html>

@@ -22,8 +22,7 @@ public class AuthService {
 
 
 
-
-    public RegisterResponse register(RegisterRequest request){
+    public RegisterResponse register(RegisterRequest request) throws JOSEException {
         if(userRepository.existsByUsername(request.getUsername())){
             throw new RuntimeException("Tên đăng nhập đã tồn tại");
         }
@@ -38,7 +37,8 @@ public class AuthService {
                 .displayName(request.getFullName())
                 .build();
         userRepository.save(user);
-        return RegisterResponse.builder().message("Register success.").build();
+        String token = jwtService.generateToken(user);
+        return RegisterResponse.builder().message("Register success.").token(token).build();
     }
 
     public AuthenticaionResponse login(LoginRequest request) throws JOSEException {
@@ -47,7 +47,7 @@ public class AuthService {
             if(!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())){
                 throw new RuntimeException("Tài khoản mật khẩu sai");
             }
-            var token = jwtService.generateToken(user);
+            String token = jwtService.generateToken(user);
             return AuthenticaionResponse.builder()
                     .authenticated(true)
                     .token(token)

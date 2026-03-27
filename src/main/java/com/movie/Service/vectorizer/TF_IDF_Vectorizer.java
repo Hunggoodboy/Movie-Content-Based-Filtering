@@ -85,8 +85,8 @@ public class TF_IDF_Vectorizer {
         return  vector;
     }
 
-    public float[] TF_IDF_Algorithm (Movie movie) {
-        String[] text = movie.toFeatureText().split("\\s+");
+    public float[] TF_IDF_Algorithm (String texts) {
+        String[] text = texts.split("\\s+");
         Map<String, Integer> dfCount = new HashMap<>();
         for(String term : text){
             if(dfCount.containsKey(term)){

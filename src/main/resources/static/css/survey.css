@@ -1,0 +1,95 @@
+body {
+    background-color: #141414; /* Màu nền tối kiểu Netflix */
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.survey-container {
+    max-width: 800px;
+    width: 100%;
+    background: #222;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+h2 { margin-top: 0; }
+.subtitle { color: #aaa; margin-bottom: 30px; }
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section h3 {
+    font-size: 16px;
+    color: #e50914; /* Màu đỏ nổi bật */
+    margin-bottom: 10px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+}
+
+/* Kiểu dáng cho các nút chọn (Chips) */
+.chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip {
+    background: #333;
+    color: #ccc;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    user-select: none;
+    border: 1px solid transparent;
+}
+
+.chip:hover {
+    background: #444;
+}
+
+/* Trạng thái khi được chọn */
+.chip.active {
+    background: #e50914;
+    color: #fff;
+    border-color: #ff404a;
+    box-shadow: 0 0 8px rgba(229, 9, 20, 0.5);
+}
+
+textarea {
+    width: 100%;
+    height: 80px;
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: inherit;
+    resize: vertical;
+}
+
+textarea:focus { outline: none; border-color: #e50914; }
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: #e50914;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover { background: #f40612; }

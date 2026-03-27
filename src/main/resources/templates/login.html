@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieFlix - Đăng Nhập & Đăng Ký</title>
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+</head>
+<body>
+    <div class="netflix-bg">
+        <div class="background-overlay"></div>
+        
+        <header class="main-header">
+            <h1 class="app-title">MovieFlix</h1>
+        </header>
+
+        <main class="main-content">
+            <div id="login-form" class="form-card active">
+                <h2>Đăng Nhập</h2>
+                <div class="form-group">
+                    <input id="login-username" type="text" placeholder="Tên đăng nhập" required />
+                </div>
+                <div class="form-group">
+                    <input id="login-password" type="password" placeholder="Mật khẩu" required />
+                </div>
+                <button class="btn-submit" onclick="demoLogin()">Đăng Nhập</button>
+                <p id="login-msg" class="msg"></p>
+                <div class="footer-links">
+                    Chưa có tài khoản? <a href="javascript:void(0)" onclick="showRegister()">Đăng ký ngay</a>
+                </div>
+            </div>
+
+            <div id="register-form" class="form-card">
+                <h2>Đăng Ký</h2>
+                <div class="form-group">
+                    <input id="reg-fullname" type="text" placeholder="Họ và tên" required />
+                </div>
+                <div class="form-group">
+                    <input id="reg-email" type="email" placeholder="Email" required />
+                </div>
+                <div class="form-group">
+                    <input id="reg-username" type="text" placeholder="Tên đăng nhập" required />
+                </div>
+                <div class="form-group">
+                    <input id="reg-password" type="password" placeholder="Mật khẩu" required />
+                </div>
+                <div class="form-group">
+                    <input id="reg-confirm" type="password" placeholder="Xác nhận mật khẩu" required />
+                </div>
+                <button class="btn-submit" onclick="demoRegister()">Đăng Ký</button>
+                <p id="reg-msg" class="msg"></p>
+                <div class="footer-links">
+                    Đã có tài khoản? <a href="javascript:void(0)" onclick="showLogin()">Đăng nhập ngay</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

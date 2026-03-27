@@ -1,9 +1,8 @@
 package com.movie.Service.vectorizer;
 
-import com.movie.Entity.Genre;
-import com.movie.Entity.Movie;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -89,22 +88,18 @@ public class OneHotEncoder {
         AGE_INDEX.put("C18", 63);
     }
 
-    public float[] oneHotEncoder(Movie movie) {
+    public float[] oneHotEncoder(Set<String> genres, Set<String> countries, Set<String> languages, String ageRating) {
         float[] result = new float[84];
-        Set<Genre> genres = movie.getGenres();
-        String country = movie.getCountry();
-        String language = movie.getLanguage();
-        String ageRating = movie.getAgeRating();
 
-        for(Genre genre : genres){
-            Integer idx = GENRE_INDEX.get(genre.getName());
+        for(String genre : genres){
+            Integer idx = GENRE_INDEX.get(genre);
             if(idx != null) result[idx] = 1;
         }
-        if(country != null) {
+        for(String country : countries) {
             Integer idx = COUNTRY_INDEX.get(country);
             if(idx != null) result[idx] = 1;
         }
-        if(language != null) {
+        for(String language : languages) {
             Integer idx = LANGUAGE_INDEX.get(language);
             if(idx != null) result[idx] = 1;
         }
