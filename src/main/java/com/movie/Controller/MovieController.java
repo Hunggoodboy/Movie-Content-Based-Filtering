@@ -30,4 +30,8 @@ public class MovieController {
     public ResponseEntity<List<MovieResponse> > getMovieRecommend(@RequestHeader("Authorization") String authHeader) throws ParseException, JOSEException {
         return ResponseEntity.ok(compareVectorService.findMovieRecommendForUser(authHeader));
     }
+    
 }
+
+
+ 

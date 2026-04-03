@@ -42,17 +42,24 @@ public class AuthService {
     }
 
     public AuthenticaionResponse login(LoginRequest request) throws JOSEException {
-        if(userRepository.existsByUsername(request.getUsername())){
-            User user = userRepository.findByUsername(request.getUsername());
-            if(!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())){
-                throw new RuntimeException("Tài khoản mật khẩu sai");
-            }
-            String token = jwtService.generateToken(user);
-            return AuthenticaionResponse.builder()
-                    .authenticated(true)
-                    .token(token)
-                    .build();
-        }
-        throw new RuntimeException("Tài khoản không tồn tại");
+    if(!userRepository.existsByUsername(request.getUsername())){
+        return AuthenticaionResponse.builder()
+                .authenticated(false)
+                .build();
     }
+
+    User user = userRepository.findByUsername(request.getUsername());
+
+    if(!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())){
+        return AuthenticaionResponse.builder()
+                .authenticated(false)
+                .build();
+    }
+
+    var token = jwtService.generateToken(user);
+    return AuthenticaionResponse.builder()
+            .authenticated(true)
+            .token(token)
+            .build();
+}
 }

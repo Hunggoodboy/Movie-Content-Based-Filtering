@@ -14,6 +14,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class MovieService {
+    
     private final MovieRepository movieRepository;
     private final GenreRepository genreRepository;
     private final MovieVectorService movieVectorService;
