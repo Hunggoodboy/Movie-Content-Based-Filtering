@@ -5,6 +5,7 @@ import com.movie.Entity.Genre;
 import com.movie.Entity.Movie;
 import com.movie.Repository.MovieRepository;
 import com.movie.Repository.GenreRepository;
+import com.movie.Service.vectorizer.MovieVectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

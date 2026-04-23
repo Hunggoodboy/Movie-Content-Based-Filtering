@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Xem Phim - MovieFlix</title>
+    <link rel="stylesheet" href="/css/index.css"> <link rel="stylesheet" href="/css/detail.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="logo" onclick="window.location.href='/'" style="cursor:pointer;">MovieFlix</div>
+    <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+</header>
+
+<div class="detail-container">
+    <h1 id="movie-title">Đang tải phim...</h1>
+
+    <div class="video-player">
+        <div id="video-screen">
+            <span id="time-display">00:00:00</span>
+        </div>
+        <div class="video-controls">
+            <button id="play-btn" class="control-btn play">▶ Xem Phim</button>
+            <button id="pause-btn" class="control-btn pause" style="display:none;">⏸ Tạm dừng</button>
+        </div>
+    </div>
+
+    <div class="interaction-box">
+        <div class="rating-box">
+            <label>Đánh giá sao (1-5):</label>
+            <input type="number" id="rating-input" min="1" max="5" placeholder="5">
+        </div>
+        <div class="like-box">
+            <label>
+                <input type="checkbox" id="like-checkbox" value="1"> 👍 Yêu thích phim này
+            </label>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/detail.js"></script>
+</body>
+</html>

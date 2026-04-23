@@ -1,9 +1,8 @@
-package com.movie.Service;
+package com.movie.Service.vectorizer;
 
 import com.movie.Entity.Movie;
 import com.movie.Entity.MovieVector;
 import com.movie.Repository.MovieVectorRepository;
-import com.movie.Service.vectorizer.VectorBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,11 @@
 package com.movie.Service;
 
+import com.movie.DTO.Response.MovieResponse;
 import com.movie.Entity.MovieVector;
 import com.movie.Entity.UserVector;
 import com.movie.Repository.MovieRepository;
 import com.movie.Repository.MovieVectorRepository;
 import com.movie.Repository.UserRepository;
-import movie.DTO.Response.MovieResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,6 @@ public class CompareVectorService {
 
     private final UserVectorService userVectorService;
     private final MovieVectorRepository movieVectorRepository;
-    private final UserRepository userRepository;
     private final MovieRepository movieRepository;
 
     public float cosineForVector(float[] vector1, float[] vector2){
@@ -46,7 +45,7 @@ public class CompareVectorService {
         return (float) (dot / (Math.sqrt(norm1) * Math.sqrt(norm2)));
     }
 
-    public List<MovieResponse> findMovieRecommendForUser(String authHeader) 
+    public List<MovieResponse> findMovieRecommendForUser(String authHeader)
             throws ParseException {
 
         List<MovieVector> movieVectors = movieVectorRepository.findAll();
@@ -62,7 +61,7 @@ public class CompareVectorService {
                         );
                         return new AbstractMap.SimpleEntry<>(movieVector.getMovie(), score);
                     })
-                    // 🔥 Sắp xếp GIẢM DẦN (phim giống nhất lên đầu)
+                    // Sắp xếp GIẢM DẦN (phim giống nhất lên đầu)
                     .sorted((a, b) -> Float.compare(b.getValue(), a.getValue()))
                     .map(entry -> MovieResponse.fromEntity(entry.getKey()))
                     .toList();

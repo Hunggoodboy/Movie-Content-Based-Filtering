@@ -1,12 +1,11 @@
 package com.movie.Controller;
 
 import com.movie.DTO.Request.MovieRequest;
-import com.movie.Entity.Movie;
 import com.movie.Service.CompareVectorService;
 import com.movie.Service.MovieService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AllArgsConstructor;
-import movie.DTO.Response.MovieResponse;
+import com.movie.DTO.Response.MovieResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

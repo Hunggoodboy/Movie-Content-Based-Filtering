@@ -23,5 +23,4 @@ public class MovieRequest {
     private String posterUrl;
     private String externalUrl;
     private Set<String> genreNames;
-
 }

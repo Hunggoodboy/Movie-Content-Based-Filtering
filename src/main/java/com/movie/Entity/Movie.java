@@ -3,11 +3,10 @@ package com.movie.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.time.LocalTime;
+import java.util.*;
 
 @Entity
 @Table(name = "movies")
@@ -76,6 +75,9 @@ public class Movie {
     @Column(name = "external_url", columnDefinition = "TEXT")
     private String externalUrl;
 
+    private LocalTime duration;
+
+
     // -------------------------------------------------------
     // Thống kê
     // -------------------------------------------------------
@@ -123,6 +125,9 @@ public class Movie {
 
     @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private MovieVector vector;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserMovieInteraction> interactions;
 
     // -------------------------------------------------------
     // Lifecycle

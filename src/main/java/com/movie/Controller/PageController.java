@@ -20,5 +20,10 @@ public class PageController {
     public String showSurveyPage() {
         return "survey";
     }
+    @GetMapping("/detail")
+    public String detailPage() {
+        // Trả về tên file detail.html (nằm trong thư mục src/main/resources/templates)
+        return "detail";
+    }
 
 }

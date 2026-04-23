@@ -11,7 +11,5 @@ import java.util.UUID;
 
 @Repository
 public interface MovieVectorRepository extends JpaRepository<MovieVector, UUID> {
-    Optional<MovieVector> findById(UUID id);
-
     Optional<MovieVector> findByMovieId(UUID movieId);
 }

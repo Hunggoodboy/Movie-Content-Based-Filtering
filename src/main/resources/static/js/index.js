@@ -36,10 +36,12 @@ function renderRow(movies, id) {
 
         // 👇 CLICK ĐỂ MỞ YOUTUBE
         div.onclick = () => {
-            if (m.externalUrl) {
-                window.open(m.externalUrl, "_blank");
+            // Truyền ID phim lên thanh URL. (Đảm bảo backend trả về m.id hoặc m.movieId)
+            const movieId = m.id || m.movieId;
+            if (movieId) {
+                window.location.href = "/detail?id=" + movieId;
             } else {
-                alert("Phim này chưa có link!");
+                alert("Lỗi: Không tìm thấy ID phim!");
             }
         };
 

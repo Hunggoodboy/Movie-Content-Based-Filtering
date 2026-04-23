@@ -1,4 +1,4 @@
-package movie.DTO.Response;
+package com.movie.DTO.Response;
 
 import com.movie.Entity.Movie;
 import lombok.*;

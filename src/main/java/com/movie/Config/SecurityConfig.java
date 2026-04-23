@@ -38,7 +38,10 @@ public class SecurityConfig{
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/auth/login", "/auth/register", "/css/**", "/api/movie/post","/api/movies","/js/**", "/index", "/", "/login", "/register", "/survey", "/auth/my-favourite","/my-recommend-movie", "/api/survey/**","/api/movies/hot").permitAll()
+                            .requestMatchers("/auth/login", "/auth/register", "/css/**", "/api/movie/post",
+                                    "/api/movies","/js/**", "/index", "/", "/login", "/register",
+                                    "/survey", "/auth/my-favourite","/my-recommend-movie", "/api/survey/**","/api/movies/hot" ,
+                                            "/detail" , "/api/behavior/**", "/api/ai/**"  ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
