@@ -3,6 +3,9 @@ package com.movie.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "genres")
 @Getter
@@ -19,4 +22,7 @@ public class Genre {
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<Movie> movies = new HashSet<>();
 }

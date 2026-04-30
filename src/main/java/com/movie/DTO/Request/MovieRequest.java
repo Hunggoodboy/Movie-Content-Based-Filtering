@@ -2,6 +2,7 @@ package com.movie.DTO.Request;
 
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -22,5 +23,5 @@ public class MovieRequest {
     private Integer durationMins;
     private String posterUrl;
     private String externalUrl;
-    private Set<String> genreNames;
+    private Set<String> genreNames = new HashSet<>();;
 }

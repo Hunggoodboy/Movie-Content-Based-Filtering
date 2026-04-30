@@ -1,3 +1,4 @@
+/* ===== CONTAINER CHÍNH ===== */
 .detail-container {
     max-width: 900px;
     margin: 80px auto 20px auto;
@@ -6,6 +7,111 @@
     border-radius: 10px;
 }
 
+/* ===== HERO SECTION (POSTER + INFO) ===== */
+.movie-hero {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.movie-poster-wrap {
+    flex-shrink: 0;
+}
+
+.movie-poster {
+    width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.movie-main-info {
+    flex-grow: 1;
+}
+
+#movie-title {
+    font-size: 32px;
+    margin: 0 0 10px 0;
+    color: #fff;
+}
+
+/* ===== GENRE BADGES ===== */
+.genre-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.genre-badge {
+    background: #333;
+    color: #ccc;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #555;
+    transition: 0.2s;
+}
+
+.genre-badge:hover {
+    background: #e50914;
+    color: #fff;
+    border-color: #e50914;
+    cursor: default;
+}
+
+/* ===== THỐNG KÊ NHANH ===== */
+.movie-stats {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #bbb;
+}
+
+.stat-divider {
+    color: #555;
+}
+
+/* ===== META GRID ===== */
+.movie-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.meta-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.meta-label {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.meta-value {
+    color: #eee;
+}
+
+.movie-description-wrap {
+    margin-top: 15px;
+}
+
+.movie-description {
+    line-height: 1.6;
+    color: #ccc;
+    text-align: justify;
+    margin-top: 5px;
+}
+
+/* ===== VIDEO PLAYER ===== */
 .video-player {
     width: 100%;
     margin-top: 20px;
@@ -51,6 +157,7 @@
 .control-btn.play:hover { background: #ff1e2d; }
 .control-btn.pause { background: #555; }
 
+/* ===== ĐÁNH GIÁ & TƯƠNG TÁC ===== */
 .interaction-box {
     margin-top: 20px;
     display: flex;
@@ -70,4 +177,18 @@
 .like-box input {
     transform: scale(1.5);
     margin-right: 10px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .movie-hero {
+        flex-direction: column;
+        align-items: center;
+    }
+    .movie-meta-grid {
+        grid-template-columns: 1fr;
+    }
+    #video-screen {
+        height: 300px;
+    }
 }

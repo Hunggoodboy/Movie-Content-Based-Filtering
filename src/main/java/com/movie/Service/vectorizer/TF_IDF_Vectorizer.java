@@ -103,7 +103,7 @@ public class TF_IDF_Vectorizer {
             Integer idx = vocabularyMap.get(term);
             if(idx == null || idx >= 300) continue;
             float tf =(float)dfCount.get(term) / text.length;
-            float idf =(float)Math.log( (double) n / dfMap.get(term) );
+            float idf =(float)Math.log( (double) n / dfMap.getOrDefault(term, 1) );
             result[idx] = tf * idf;
         }
         return vectorNormalize(result);

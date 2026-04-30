@@ -1,84 +1,48 @@
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <title>MovieFlix</title>
-        <link rel="stylesheet" href="/css/index.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>MovieFlix</title>
+    <!-- Đảm bảo đường dẫn này khớp với vị trí đặt file css trong Spring Boot -->
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
 
-        <!-- HEADER -->
-        <header class="header">
+<!-- HEADER -->
+<header class="header">
+    <div class="logo">MovieFlix</div>
 
-            <!-- LOGO -->
-            <div class="logo">MovieFlix</div>
-
-            <!-- MENU -->
-            <div class="menu">
-                <span>Phim bộ</span>
-                <span>Phim lẻ</span>
-            </div>
-
-            <!-- FILTER -->
-            <select>
-                <option>Thể loại</option>
-            </select>
-
-            <select>
-                <option>Quốc gia</option>
-            </select>
-
-            <select>
-                <option>Năm phát hành</option>
-            </select>
-
-            <!-- SEARCH -->
-            <input type="text" placeholder="Tìm phim...">
-
-            <!-- LOGOUT -->
-            <button class="logout-btn" onclick="logout()">Đăng xuất</button>
-
-        </header>
-
-        <!-- TEXT CHÚC (đưa ra ngoài header cho đẹp) -->
-        <div class="welcome-text"></div>
-
-        <!-- CONTENT -->
-        <div class="container">
-
-            <h2>🎯 Phim đề xuất cho bạn</h2>
-            <div class="movie-row" id="recommend-list"></div>
-            <h2>🎬 Phim sắp ra mắt</h2>
-            <div class="movie-row">
-
-
-                    <div class="movie-card" data-title="Deadpool 3"
-                         style="background-image: url('https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg');"></div>
-
-                    <div class="movie-card" data-title="Joker 2"
-                         style="background-image: url('https://image.tmdb.org/t/p/w500/5Eip60UDiPLASyKjmHPMruggTc4.jpg');"></div>
-
-                    <div class="movie-card" data-title="Venom 3"
-                         style="background-image: url('https://image.tmdb.org/t/p/w500/4woSOUD0equAYzvwhWBHIJDCM88.jpg');"></div>
-
-                    <div class="movie-card" data-title="Transformers One"
-                         style="background-image: url('https://image.tmdb.org/t/p/w500/7lTnXOy0iNtBAdRP3TZvaKJ77F6.jpg');"></div>
-
-                    <div class="movie-card" data-title="Kung Fu Panda 4"
-                         style="background-image: url('https://image.tmdb.org/t/p/w500/kDp1vUBnMpe8ak4rjgl3cLELqjU.jpg');"></div>
-
-                    <div class="movie-card" data-title="Inside Out 2"
-                         style="background-image: url('https://image.tmdb.org/t/p/w500/oxxqiyWrnM0XPnBtVe9TgYWnPxT.jpg');"></div>
-
-                    <div class="movie-card" data-title="Spider-Man: Beyond the Spider-Verse"
-                         style="background-image: url('https://image.tmdb.org/t/p/w500/9l1eZiJHmhr5jIlthMdJN5WYoff.jpg');"></div>
-
-                </div>
-            </div>
-        </div>
-
+    <div class="menu">
+        <span>Phim bộ</span>
+        <span>Phim lẻ</span>
     </div>
 
-    <script src="/js/index.js"></script>
+    <select><option>Thể loại</option></select>
+    <select><option>Quốc gia</option></select>
+    <select><option>Năm phát hành</option></select>
+
+    <input type="text" placeholder="Tìm phim...">
+    <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+</header>
+
+<div class="welcome-text"></div>
+
+<!-- CONTENT -->
+<div class="container">
+    <h2>🎯 Phim đề xuất cho bạn</h2>
+
+    <!-- Danh sách phim hiển thị ở đây -->
+    <div class="movie-row" id="recommend-list"></div>
+
+    <!-- PHẦN PHÂN TRANG -->
+    <div class="pagination-container">
+        <button id="prev-btn" onclick="changePage(-1)">Trước</button>
+        <span id="page-info">Trang 1 / 1</span>
+        <button id="next-btn" onclick="changePage(1)">Sau</button>
+    </div>
+</div>
+
+<!-- Đảm bảo đường dẫn này khớp với vị trí đặt file js trong Spring Boot -->
+<script src="/js/index.js"></script>
 </body>
 </html>

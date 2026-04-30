@@ -19,7 +19,15 @@ public class VectorBuilder {
         Set<String> genres =  movie.getGenres().stream()
                 .map(genre -> genre.getName())
                 .collect(Collectors.toSet());
-        float[] one_hot_vector = oneHotEncoder.oneHotEncoder(genres, Set.of(movie.getCountry()), Set.of(movie.getLanguage()), movie.getAgeRating());
+        Set<String> countries = (movie.getCountry() != null) ? Set.of(movie.getCountry()) : Set.of();
+        Set<String> languages = (movie.getLanguage() != null) ? Set.of(movie.getLanguage()) : Set.of();
+
+        float[] one_hot_vector = oneHotEncoder.oneHotEncoder(
+                genres,
+                countries,
+                languages,
+                movie.getAgeRating()
+        );
 
         System.out.println("TF-IDF length: " + tf_idf_vector.length);
         System.out.println("OneHot length: " + one_hot_vector.length);
@@ -35,6 +43,7 @@ public class VectorBuilder {
 
     public float[] buildFavouriteUser(FavouriteMovieRequest request) {
         float[] tf_idf_vector = tfIdfVectorizer.TF_IDF_Algorithm(request.getDescription());
+
         Set<String> genres = request.getGenres().stream().collect(Collectors.toSet());
         float[] one_hot_vector = oneHotEncoder.oneHotEncoder(
                 genres,
