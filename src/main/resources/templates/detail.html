@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Xem Phim - MovieFlix</title>
-    <link rel="stylesheet" href="/css/index.css"> <link rel="stylesheet" href="/css/detail.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/detail.css">
 </head>
 <body>
 
@@ -13,8 +14,67 @@
 </header>
 
 <div class="detail-container">
-    <h1 id="movie-title">Đang tải phim...</h1>
 
+    <!-- ===== HERO: Poster + Thông tin chính ===== -->
+    <div class="movie-hero">
+        <div class="movie-poster-wrap">
+            <img id="movie-poster" src="" alt="Poster phim" class="movie-poster" />
+        </div>
+
+        <div class="movie-main-info">
+            <h1 id="movie-title">Đang tải phim...</h1>
+
+            <!-- Badges thể loại -->
+            <div id="movie-genres" class="genre-list"></div>
+
+            <!-- Thống kê nhanh -->
+            <div class="movie-stats">
+                <span class="stat-item">⭐ <span id="movie-avg-rating">--</span></span>
+                <span class="stat-divider">|</span>
+                <span class="stat-item">👁 <span id="movie-views">--</span> lượt xem</span>
+                <span class="stat-divider">|</span>
+                <span class="stat-item">🕐 <span id="movie-duration">--</span> phút</span>
+                <span class="stat-divider">|</span>
+                <span class="stat-item">📅 <span id="movie-year">--</span></span>
+            </div>
+
+            <!-- Thông tin chi tiết dạng lưới -->
+            <div class="movie-meta-grid">
+                <div class="meta-row">
+                    <span class="meta-label">Đạo diễn</span>
+                    <span class="meta-value" id="movie-director">--</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Diễn viên</span>
+                    <span class="meta-value" id="movie-cast">--</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Quốc gia</span>
+                    <span class="meta-value" id="movie-country">--</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Ngôn ngữ</span>
+                    <span class="meta-value" id="movie-language">--</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Giới hạn tuổi</span>
+                    <span class="meta-value" id="movie-age-rating">--</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Số đánh giá</span>
+                    <span class="meta-value"><span id="movie-total-ratings">--</span> đánh giá</span>
+                </div>
+            </div>
+
+            <!-- Mô tả phim -->
+            <div class="movie-description-wrap">
+                <p class="meta-label">Mô tả</p>
+                <p id="movie-description" class="movie-description">--</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== VIDEO PLAYER ===== -->
     <div class="video-player">
         <div id="video-screen">
             <span id="time-display">00:00:00</span>
@@ -25,6 +85,7 @@
         </div>
     </div>
 
+    <!-- ===== ĐÁNH GIÁ & TƯƠNG TÁC ===== -->
     <div class="interaction-box">
         <div class="rating-box">
             <label>Đánh giá sao (1-5):</label>

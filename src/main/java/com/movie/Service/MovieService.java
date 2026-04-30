@@ -1,6 +1,7 @@
 package com.movie.Service;
 
 import com.movie.DTO.Request.MovieRequest;
+import com.movie.DTO.Response.MovieResponse;
 import com.movie.Entity.Genre;
 import com.movie.Entity.Movie;
 import com.movie.Repository.MovieRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +42,11 @@ public class MovieService {
         movie.buildTermSet();
         movieRepository.save(movie);
         movieVectorService.createVector(movie);
+    }
+
+    public MovieResponse getMovieResponse(UUID movieId){
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy phim với ID: " + movieId));
+        return MovieResponse.fromEntity(movie);
     }
 }

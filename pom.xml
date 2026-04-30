@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com</groupId>
-    <artifactId>Movie</artifactId>
+    <artifactId>Movie-Content-Based-Filtering</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Movie</name>
     <description>Movie</description>

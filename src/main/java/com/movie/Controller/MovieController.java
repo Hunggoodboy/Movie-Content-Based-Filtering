@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -25,11 +26,16 @@ public class MovieController {
         }
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/my-recommend-movie")
     public ResponseEntity<List<MovieResponse> > getMovieRecommend(@RequestHeader("Authorization") String authHeader) throws ParseException, JOSEException {
         return ResponseEntity.ok(compareVectorService.findMovieRecommendForUser(authHeader));
     }
-    
+
+    @GetMapping("/api/movie-detail")
+    public ResponseEntity<MovieResponse> getMovieDetail(@RequestParam UUID movieId) {
+        return ResponseEntity.ok(movieService.getMovieResponse(movieId));
+    }
 }
 
 

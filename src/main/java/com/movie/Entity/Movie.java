@@ -126,9 +126,6 @@ public class Movie {
     @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private MovieVector vector;
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<UserMovieInteraction> interactions;
-
     // -------------------------------------------------------
     // Lifecycle
     // -------------------------------------------------------
