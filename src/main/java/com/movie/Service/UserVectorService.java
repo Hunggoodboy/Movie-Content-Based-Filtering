@@ -1,6 +1,6 @@
 package com.movie.Service;
 
-import com.movie.DTO.Request.FavouriteMovieRequest;
+import com.movie.DTO.Request.FavouriteSurveyRequest;
 import com.movie.DTO.Response.ApiResponse;
 import com.movie.Entity.User;
 import com.movie.Entity.UserVector;
@@ -26,7 +26,7 @@ public class UserVectorService {
     private final UserVectorRepository userVectorRepository;
     private final UserRepository userRepository;
     private final JwtService  jwtService;
-    public ApiResponse buildUserVector(FavouriteMovieRequest request, String authAhead) throws JOSEException, ParseException {
+    public ApiResponse buildUserVector(FavouriteSurveyRequest request, String authAhead) throws JOSEException, ParseException {
         UUID userId = UUID.fromString(jwtService.findUser(authAhead).getUserId());
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
         UserVector userVector = UserVector.builder()

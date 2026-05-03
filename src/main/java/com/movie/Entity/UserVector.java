@@ -3,6 +3,7 @@ package com.movie.Entity;
 import com.movie.Config.VectorType;
 import jakarta.persistence.*;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class UserVector {
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     // Vector sở thích của user — cùng số chiều với MovieVector (384)

@@ -1,5 +1,6 @@
 package com.movie.Controller;
 
+import com.movie.DTO.Request.LikeMovieRequest;
 import com.movie.DTO.Request.MovieRequest;
 import com.movie.Service.CompareVectorService;
 import com.movie.Service.MovieService;
@@ -35,6 +36,11 @@ public class MovieController {
     @GetMapping("/api/movie-detail")
     public ResponseEntity<MovieResponse> getMovieDetail(@RequestParam UUID movieId) {
         return ResponseEntity.ok(movieService.getMovieResponse(movieId));
+    }
+
+    @PostMapping("/api/like-movie")
+    public ResponseEntity<?> likeMovie(@RequestHeader("Authorization") String authHeader, @RequestBody LikeMovieRequest request) throws ParseException, JOSEException {
+        return ResponseEntity.ok(movieService.likeMovie(request, authHeader));
     }
 }
 

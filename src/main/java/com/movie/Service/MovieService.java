@@ -1,16 +1,26 @@
 package com.movie.Service;
 
+import com.movie.DTO.Request.LikeMovieRequest;
 import com.movie.DTO.Request.MovieRequest;
+import com.movie.DTO.Response.ApiResponse;
 import com.movie.DTO.Response.MovieResponse;
+import com.movie.Entity.FavouriteMovie;
 import com.movie.Entity.Genre;
 import com.movie.Entity.Movie;
+import com.movie.Entity.User;
+import com.movie.Repository.FavouriteMovieRepository;
 import com.movie.Repository.MovieRepository;
 import com.movie.Repository.GenreRepository;
+import com.movie.Repository.UserRepository;
+import com.movie.Service.Authentication.JwtService;
 import com.movie.Service.vectorizer.MovieVectorService;
+import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.ObjectMapper;
 
+import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +34,10 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final GenreRepository genreRepository;
     private final MovieVectorService movieVectorService;
+    private final FavouriteMovieRepository favouriteMovieRepository;
+    private final JwtService  jwtService;
+    private final UserRepository userRepository;
+
     public void saveNewMovie(MovieRequest request){
         Movie movie = Movie.builder()
                 .title(request.getTitle())
@@ -78,5 +92,21 @@ public class MovieService {
             System.out.println("Lỗi khi chuyển đổi đối tượng sang JSON: " + e.getMessage());
         }
         return MovieResponse.fromEntity(movie);
+    }
+
+    public ApiResponse likeMovie(LikeMovieRequest request, String authHeader) throws ParseException, JOSEException {
+        Movie movie = movieRepository.findById(request.getMovieId()).orElseThrow(() -> new RuntimeException("Không tìm thấy phim với ID: " + request.getMovieId()));
+        UUID userId = UUID.fromString(jwtService.findUser(authHeader).getUserId());
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Không tìm thấy người dùng"));
+        FavouriteMovie favouriteMovie = FavouriteMovie.builder()
+                .user(currentUser)
+                .movie(movie)
+                .likedAt(LocalDateTime.now())
+                .build();
+        favouriteMovieRepository.save(favouriteMovie);
+        return ApiResponse.builder()
+                .success(true)
+                .message("Đã thích phim: " + movie.getTitle())
+                .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.movie.Service.vectorizer;
 
-import com.movie.DTO.Request.FavouriteMovieRequest;
+import com.movie.DTO.Request.FavouriteSurveyRequest;
 import com.movie.Entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class VectorBuilder {
         return result;
     }
 
-    public float[] buildFavouriteUser(FavouriteMovieRequest request) {
+    public float[] buildFavouriteUser(FavouriteSurveyRequest request) {
         float[] tf_idf_vector = tfIdfVectorizer.TF_IDF_Algorithm(request.getDescription());
 
         Set<String> genres = request.getGenres().stream().collect(Collectors.toSet());

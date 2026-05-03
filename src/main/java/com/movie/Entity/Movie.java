@@ -2,7 +2,7 @@ package com.movie.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -124,6 +124,7 @@ public class Movie {
     private Set<Genre> genres = new HashSet<>();
 
     @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private MovieVector vector;
 
     // -------------------------------------------------------

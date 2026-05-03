@@ -25,5 +25,9 @@ public class PageController {
         // Trả về tên file detail.html (nằm trong thư mục src/main/resources/templates)
         return "detail";
     }
+    @GetMapping("/evaluation")
+    public String showEvaluationPage() {
+        return "Evaluation";
+    }
 
 }

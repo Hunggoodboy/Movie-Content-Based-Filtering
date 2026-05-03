@@ -1,6 +1,6 @@
 package com.movie.Controller;
 
-import com.movie.DTO.Request.FavouriteMovieRequest;
+import com.movie.DTO.Request.FavouriteSurveyRequest;
 import com.movie.DTO.Request.LoginRequest;
 import com.movie.DTO.Request.RegisterRequest;
 import com.movie.DTO.Response.ApiResponse;
@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/my-favourite")
-    public ResponseEntity<?> myFavourite(@RequestBody FavouriteMovieRequest request, @RequestHeader("Authorization") String authAhead) throws JOSEException, ParseException {
+    public ResponseEntity<?> myFavourite(@RequestBody FavouriteSurveyRequest request, @RequestHeader("Authorization") String authAhead) throws JOSEException, ParseException {
         return ResponseEntity.ok(userVectorService.buildUserVector(request, authAhead));
     }
 }

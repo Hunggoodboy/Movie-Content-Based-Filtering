@@ -44,8 +44,8 @@ public class TF_IDF_Vectorizer {
                 }
             }
         }
-
     }
+
     @PostConstruct
     private void init() {
         buildVocabulary();

@@ -1,14 +1,15 @@
 const BASE_URL = "http://localhost:8082";
 
-const urlParams = new URLSearchParams(window.location.search);
-const movieId = urlParams.get('id');
+const urlParams  = new URLSearchParams(window.location.search);
+const movieId    = urlParams.get('id');
 
-let watchSeconds = 0;
+let watchSeconds  = 0;
 let timerInterval = null;
 
-const playBtn    = document.getElementById('play-btn');
-const pauseBtn   = document.getElementById('pause-btn');
+const playBtn     = document.getElementById('play-btn');
+const pauseBtn    = document.getElementById('pause-btn');
 const timeDisplay = document.getElementById('time-display');
+const likeCheckbox = document.getElementById('like-checkbox');
 
 // ============================================================
 // 1. TẢI & HIỂN THỊ THÔNG TIN PHIM
@@ -73,6 +74,12 @@ function renderMovieDetail(movie) {
             .map(g => `<span class="genre-badge">${g}</span>`)
             .join('');
     }
+
+    // Khôi phục trạng thái like từ response nếu backend trả về
+    if (movie.liked != null) {
+        likeCheckbox.checked = movie.liked;
+        updateLikeLabel(movie.liked);
+    }
 }
 
 function setText(id, value) {
@@ -106,7 +113,97 @@ pauseBtn.onclick = () => {
 };
 
 // ============================================================
-// 3. GỬI HÀNH VI KHI RỜI TRANG
+// 3. YÊU THÍCH PHIM  →  POST /api/like-movie
+// ============================================================
+
+// Cập nhật nhãn checkbox theo trạng thái
+function updateLikeLabel(isLiked) {
+    const label = likeCheckbox.closest('label');
+    if (!label) return;
+    label.innerHTML = isLiked
+        ? `<input type="checkbox" id="like-checkbox" checked> ❤️ Đã yêu thích`
+        : `<input type="checkbox" id="like-checkbox"> 👍 Yêu thích phim này`;
+
+    // Gắn lại event vì innerHTML thay thế node
+    document.getElementById('like-checkbox').addEventListener('change', handleLikeToggle);
+}
+
+async function handleLikeToggle(e) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        window.location.href = "/login.html";
+        return;
+    }
+
+    // Disable tránh double-click
+    e.target.disabled = true;
+
+    try {
+        const res = await fetch(`${BASE_URL}/api/like-movie`, {
+            method: 'POST',
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ movieId: movieId })
+        });
+
+        if (!res.ok) throw new Error("HTTP " + res.status);
+
+        const data = await res.json();
+
+        // Backend trả về trạng thái liked mới (true/false) qua data.liked hoặc data.success
+        const nowLiked = data.liked ?? e.target.checked;
+        updateLikeLabel(nowLiked);
+
+        showToast(nowLiked ? '❤️ Đã thêm vào yêu thích!' : '💔 Đã bỏ yêu thích');
+
+    } catch (err) {
+        console.error("Lỗi like phim:", err);
+        // Revert lại trạng thái checkbox nếu lỗi
+        e.target.checked = !e.target.checked;
+        showToast('⚠️ Có lỗi xảy ra, vui lòng thử lại', true);
+    } finally {
+        e.target.disabled = false;
+    }
+}
+
+likeCheckbox.addEventListener('change', handleLikeToggle);
+
+// ============================================================
+// 4. TOAST THÔNG BÁO NHẸ
+// ============================================================
+function showToast(msg, isError = false) {
+    let toast = document.getElementById('_toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = '_toast';
+        Object.assign(toast.style, {
+            position:     'fixed',
+            bottom:       '28px',
+            right:        '24px',
+            padding:      '10px 18px',
+            borderRadius: '8px',
+            fontSize:     '14px',
+            fontWeight:   '500',
+            color:        'white',
+            zIndex:       '9999',
+            opacity:      '0',
+            transition:   'opacity .3s',
+            pointerEvents:'none'
+        });
+        document.body.appendChild(toast);
+    }
+
+    toast.textContent  = msg;
+    toast.style.background = isError ? '#c0392b' : '#e50914';
+    toast.style.opacity    = '1';
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 2800);
+}
+
+// ============================================================
+// 5. GỬI HÀNH VI KHI RỜI TRANG
 // ============================================================
 window.addEventListener('beforeunload', () => {
     if (watchSeconds > 0) sendBehaviorData();
@@ -116,30 +213,28 @@ function sendBehaviorData() {
     const token = localStorage.getItem("token");
     if (!token || !movieId) return;
 
-    const ratingInput   = document.getElementById('rating-input').value;
-    const isLiked       = document.getElementById('like-checkbox').checked ? 1.0 : 0.0;
+    const isLiked       = document.getElementById('like-checkbox')?.checked ? 1.0 : 0.0;
     const durationWatch = formatTime(watchSeconds);
 
     const payload = {
-        movieId: movieId,
+        movieId:       movieId,
         durationWatch: durationWatch,
-        liked: isLiked
+        liked:         isLiked
     };
-    if (ratingInput) payload.rating = parseFloat(ratingInput);
 
     fetch(`${BASE_URL}/api/behavior/evaluate`, {
-        method: 'POST',
+        method:    'POST',
         headers: {
             "Authorization": "Bearer " + token,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(payload),
+        body:      JSON.stringify(payload),
         keepalive: true
     }).catch(err => console.error("Lỗi gửi tracking:", err));
 }
 
 // ============================================================
-// 4. LOGOUT
+// 6. LOGOUT
 // ============================================================
 function logout() {
     localStorage.removeItem("token");

@@ -1,20 +1,29 @@
 package com.movie.DTO.Request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class FavouriteMovieRequest {
-    List<String> genres;
-    List<String> countries;
-    List<String> languages;
-    String age;
-    String description;
+
+    // ID phim muốn like/unlike
+    private UUID movieId;
+
+    // Rating tuỳ chọn (1.0 - 5.0)
+    private Float rating;
+
+    // Ghi chú tuỳ chọn
+    private String note;
+
+    // --- Các field dùng cho VectorBuilder.buildFavouriteUser() ---
+    private String description;
+    private List<String> genres;
+    private List<String> countries;
+    private List<String> languages;
+    private String age;
 }

@@ -1,5 +1,6 @@
 package com.movie.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,6 @@ public class Genre {
 
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private Set<Movie> movies = new HashSet<>();
 }

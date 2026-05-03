@@ -3,7 +3,7 @@ package com.movie.Entity;
 import com.movie.Config.VectorType;
 import jakarta.persistence.*;
 import lombok.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,6 +22,7 @@ public class MovieVector{
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "movie_id")
+    @JsonIgnore
     private Movie movie;
 
     // Vector TF-IDF đã tính sẵn, lưu dạng JSON: [0.12, 0.05, 0.87, ...]
