@@ -41,7 +41,7 @@ public class SecurityConfig{
                             .requestMatchers("/auth/login", "/auth/register", "/css/**", "/api/movie/post",
                                     "/api/movies","/js/**", "/index", "/", "/login", "/register",
                                     "/survey", "/auth/my-favourite","/my-recommend-movie", "/api/survey/**","/api/movies/hot" ,
-                                            "/detail" , "/api/behavior/**", "/api/ai/**","/api/movie-detail","/api/like-movie", "/evaluation", "/api/evaluation/metrics" ).permitAll()
+                                            "/detail" , "/api/behavior/**", "/api/ai/**","/api/movie-detail","/api/like-movie", "/evaluation" ,"/api/rebuild", "/api/evaluation/metrics","/error" ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

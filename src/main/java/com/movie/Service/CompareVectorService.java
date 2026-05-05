@@ -52,22 +52,31 @@ public class CompareVectorService {
 
         try {
             UserVector userVector = userVectorService.getUserVector(authHeader);
+            System.out.println("Các phim được gợi và điểm cosine similarity với vector người dùng:");
+            List<MovieResponse> movieResponses = movieVectors.stream()
+                 .map(movieVector -> {
+                     float score = cosineForVector(
+                             userVector.getVector(),
+                             movieVector.getVector()
+                     );
+                     return new AbstractMap.SimpleEntry<>(movieVector.getMovie(), score);
+                 })
+                 // Sắp xếp GIẢM DẦN (phim giống nhất lên đầu)
+                 .sorted((a, b) -> Float.compare(b.getValue(), a.getValue()))
+                 // Thêm peek() để in log tên phim và score
+                 .peek(entry -> {
+                     // Giả sử entity Movie của bạn có hàm getTitle() hoặc getName()
+                     String movieName = entry.getKey().getTitle();
+                     float score = entry.getValue();
 
-            return movieVectors.stream()
-                    .map(movieVector -> {
-                        float score = cosineForVector(
-                                userVector.getVector(),
-                                movieVector.getVector()
-                        );
-                        return new AbstractMap.SimpleEntry<>(movieVector.getMovie(), score);
-                    })
-                    // Sắp xếp GIẢM DẦN (phim giống nhất lên đầu)
-                    .sorted((a, b) -> Float.compare(b.getValue(), a.getValue()))
-                    .map(entry -> MovieResponse.fromEntity(entry.getKey()))
-                    .toList();
-
+                     System.out.println("Tên phim: " + movieName + " | Score: " + score);
+                 })
+                 .map(entry -> MovieResponse.fromEntity(entry.getKey()))
+                 .toList();
+            return movieResponses;
         } catch (Exception e) {
             // fallback nếu user chưa có vector
+            System.err.println("Lỗi khi xử lý vector người dùng: " + e.getMessage());
             return movieRepository.findAll()
                     .stream()
                     .map(MovieResponse::fromEntity)

@@ -67,14 +67,9 @@ public class RecommendationEvaluatorService {
                                                        .map(Map.Entry::getKey)
                                                        .collect(Collectors.toList());
 
-        // 4. Tính hits = giao nhau giữa top-K và liked
         Set<UUID> likedSet = new HashSet<>(likedMovieIds);
         long hits = topKMovieIds.stream().filter(likedSet::contains).count();
-
-        // 5. Precision@K = hits / K
         float precisionAtK = (float) hits / k;
-
-        // 6. Recall@K = hits / |liked|
         float recallAtK = (float) hits / likedMovieIds.size();
 
         return new EvaluationResult(
@@ -88,17 +83,4 @@ public class RecommendationEvaluatorService {
         );
     }
 
-    /**
-     * Tính trung bình Precision@K và Recall@K trên nhiều người dùng (macro-average).
-     * Dùng để đánh giá tổng thể hệ thống.
-     *
-     * @param userIds danh sách userId cần đánh giá
-     * @param k       top-K
-     */
-    public Map<String, Float> evaluateMacroAverage(List<UUID> userIds, int k) {
-        // NOTE: method này dùng userId trực tiếp, cần override evaluate() nhận UUID
-        // hoặc tạo thêm overload. Để demo, trả về map rỗng.
-        // Implement thêm tùy theo kiến trúc auth của bạn.
-        throw new UnsupportedOperationException("Implement thêm evaluate(UUID userId, int k)");
-    }
 }

@@ -2,8 +2,10 @@ package com.movie.Controller;
 
 import com.movie.DTO.Request.LikeMovieRequest;
 import com.movie.DTO.Request.MovieRequest;
+import com.movie.DTO.Response.ApiResponse;
 import com.movie.Service.CompareVectorService;
 import com.movie.Service.MovieService;
+import com.movie.Service.vectorizer.VectorBuilder;
 import com.nimbusds.jose.JOSEException;
 import lombok.AllArgsConstructor;
 import com.movie.DTO.Response.MovieResponse;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class MovieController {
     private final MovieService movieService;
     private final CompareVectorService  compareVectorService;
+    private final VectorBuilder vectorBuilder;
 
     @PostMapping("/api/movie/post")
     public ResponseEntity<?> postMovie(@RequestBody List<MovieRequest> request) {
@@ -42,7 +45,14 @@ public class MovieController {
     public ResponseEntity<?> likeMovie(@RequestHeader("Authorization") String authHeader, @RequestBody LikeMovieRequest request) throws ParseException, JOSEException {
         return ResponseEntity.ok(movieService.likeMovie(request, authHeader));
     }
+
+    @PostMapping("/api/rebuild")
+    public ResponseEntity<ApiResponse> triggerRebuildVectors() {
+        ApiResponse response = vectorBuilder.reBuildTFIDFVector();
+        return ResponseEntity.ok(response);
+    }
 }
+
 
 
  

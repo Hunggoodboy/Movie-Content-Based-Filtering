@@ -1,10 +1,19 @@
 package com.movie.Service.vectorizer;
 
 import com.movie.DTO.Request.FavouriteSurveyRequest;
+import com.movie.DTO.Response.ApiResponse;
 import com.movie.Entity.Movie;
+import com.movie.Entity.MovieVector;
+import com.movie.Repository.MovieRepository;
+import com.movie.Repository.MovieVectorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,6 +22,37 @@ import java.util.stream.Collectors;
 public class VectorBuilder {
     private final OneHotEncoder oneHotEncoder;
     private final TF_IDF_Vectorizer tfIdfVectorizer;
+    private final MovieRepository movieRepository;
+    private final MovieVectorRepository movieVectorRepository;
+
+    @Transactional
+    @Scheduled(cron = "0 0 2 * * ?") // Chạy vào lúc 2 giờ sáng hàng ngày
+    public ApiResponse reBuildTFIDFVector() {
+        List<Movie> movies = movieRepository.findAll();
+        movies.stream().forEach(movie -> {
+            try {
+                MovieVector movieVector = movieVectorRepository.findByMovieId(movie.getId()).orElse(null);
+                float[] vector = build(movie);
+                if(movieVector != null) {
+                    movieVector.setVector(vector);
+                    movieVector.setUpdatedAt(LocalDateTime.now());
+                    movieVectorRepository.save(movieVector);
+                }
+                else{
+                    MovieVector newVector = MovieVector.builder()
+                                                       .movie(movie)
+                                                       .vector(vector)
+                                                       .updatedAt(LocalDateTime.now())
+                                                       .build();
+                    movieVectorRepository.save(newVector);
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        });
+        return ApiResponse.builder().message("Rebuild TF-IDF vector thành công").success(true).build();
+    }
 
     public float[] build(Movie movie) {
         float[] tf_idf_vector = tfIdfVectorizer.TF_IDF_Algorithm(movie.getTitle() + movie.getDescription());
@@ -38,7 +78,7 @@ public class VectorBuilder {
         System.arraycopy(one_hot_vector, 0, result, tf_idf_vector.length, one_hot_vector.length);
 
         System.out.println("Final vector length: " + result.length);
-        return result;
+        return tfIdfVectorizer.vectorNormalize(result);
     }
 
     public float[] buildFavouriteUser(FavouriteSurveyRequest request) {

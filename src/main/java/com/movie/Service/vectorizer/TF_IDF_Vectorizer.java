@@ -72,7 +72,7 @@ public class TF_IDF_Vectorizer {
         }
     }
 
-    private float[] vectorNormalize(float[] vector){
+    public float[] vectorNormalize(float[] vector){
         float vec_length = 0;
         for(int i = 0 ; i < vector.length ; i++){
             vec_length += vector[i] * vector[i];
