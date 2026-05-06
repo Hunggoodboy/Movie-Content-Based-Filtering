@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thêm Phim Mới</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --red: #e50914;
+            --red-hover: #ff1e2d;
+            --dark: #0a0a0a;
+            --card: rgba(20, 20, 20, 0.92);
+            --border: rgba(255,255,255,0.07);
+            --input-bg: rgba(255,255,255,0.05);
+            --input-border: rgba(255,255,255,0.12);
+            --input-focus: rgba(229, 9, 20, 0.5);
+            --text: #f0f0f0;
+            --muted: #888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: url("https://i.postimg.cc/k4FPbN9X/anhnetflix2-1280x843-800-resize.png") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.78);
+            backdrop-filter: blur(6px);
+            z-index: 0;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 28px;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--red);
+            font-size: 26px;
+            letter-spacing: 2px;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 18px;
+            margin-left: 10px;
+        }
+
+        .header-nav a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover { color: white; }
+
+        .header-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 14px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            color: white;
+            border-color: white;
+        }
+
+        /* ===== PAGE WRAPPER ===== */
+        .page {
+            position: relative;
+            z-index: 1;
+            padding-top: 80px;
+            padding-bottom: 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* ===== FORM CARD ===== */
+        .form-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 820px;
+            margin: 0 20px;
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== FORM HEADER ===== */
+        .form-header {
+            padding: 28px 36px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .form-header-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--red);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .form-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            letter-spacing: 1.5px;
+            color: white;
+        }
+
+        .form-header p {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* ===== FORM BODY ===== */
+        .form-body {
+            padding: 30px 36px;
+        }
+
+        /* ===== SECTION LABEL ===== */
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--red);
+            margin-bottom: 16px;
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .section-title:first-child { margin-top: 0; }
+
+        /* ===== GRID ===== */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .span-2 { grid-column: span 2; }
+
+        /* ===== FIELD ===== */
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #aaa;
+            letter-spacing: 0.5px;
+        }
+
+        label .req {
+            color: var(--red);
+            margin-left: 3px;
+        }
+
+        input, textarea, select {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            padding: 10px 14px;
+            transition: border-color 0.2s, background 0.2s;
+            outline: none;
+            width: 100%;
+        }
+
+        input::placeholder, textarea::placeholder { color: #444; }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--input-focus);
+            background: rgba(229, 9, 20, 0.04);
+        }
+
+        textarea { resize: vertical; min-height: 90px; }
+
+        select option {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        /* ===== POSTER PREVIEW ===== */
+        .poster-area {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .poster-preview {
+            width: 130px;
+            height: 190px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px dashed rgba(255,255,255,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: border-color 0.3s;
+        }
+
+        .poster-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .poster-preview .placeholder-icon {
+            font-size: 32px;
+            margin-bottom: 6px;
+            opacity: 0.3;
+        }
+
+        .poster-preview .placeholder-text {
+            font-size: 11px;
+            color: #444;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        /* ===== ONE-HOT CHIP GRID ===== */
+        .chip-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .chip {
+            padding: 5px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #777;
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+            background: transparent;
+        }
+
+        .chip:hover {
+            border-color: rgba(229,9,20,0.45);
+            color: #ff8080;
+            background: rgba(229,9,20,0.07);
+        }
+
+        .chip.active {
+            border-color: rgba(229,9,20,0.6);
+            color: #ff6b6b;
+            background: rgba(229,9,20,0.18);
+        }
+
+        .chip.radio.active {
+            border-color: var(--red);
+            color: white;
+            background: var(--red);
+        }
+
+        /* ===== GENRE TAGS ===== (kept for compat, unused)
+        .genre-container {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            min-height: 46px;
+            transition: border-color 0.2s;
+            cursor: text;
+        }
+
+        .genre-container:focus-within {
+            border-color: var(--input-focus);
+        }
+
+        .genre-tag {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(229, 9, 20, 0.18);
+            border: 1px solid rgba(229, 9, 20, 0.35);
+            color: #ff6b6b;
+            padding: 3px 10px 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            animation: tagIn 0.15s ease;
+        }
+
+        @keyframes tagIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        .genre-tag .remove-tag {
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            color: #ff6b6b;
+            opacity: 0.6;
+            transition: opacity 0.15s;
+        }
+
+        .genre-tag .remove-tag:hover { opacity: 1; }
+
+        .genre-input {
+            border: none;
+            background: transparent;
+            outline: none;
+            color: white;
+            font-size: 14px;
+            min-width: 100px;
+            padding: 2px 4px;
+            flex: 1;
+        }
+
+        .genre-input::placeholder { color: #333; }
+
+        .genre-hint {
+            font-size: 11px;
+            color: #444;
+            margin-top: 5px;
+        }
+
+        /* ===== SUGGESTED GENRES ===== */
+        .genre-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .genre-chip {
+            padding: 4px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #777;
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .genre-chip:hover {
+            border-color: rgba(229,9,20,0.5);
+            color: #ff8080;
+            background: rgba(229,9,20,0.07);
+        }
+
+        .genre-chip.active {
+            border-color: rgba(229,9,20,0.5);
+            color: #ff6b6b;
+            background: rgba(229,9,20,0.15);
+        } */
+
+        /* ===== ACTIONS ===== */
+        .form-actions {
+            padding: 22px 36px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 11px 26px;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #aaa;
+        }
+
+        .btn-ghost:hover {
+            border-color: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--red);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: var(--red-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(229,9,20,0.4);
+        }
+
+        .btn-primary:active { transform: translateY(0); }
+
+        .btn-primary.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* ===== SUCCESS TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a1a;
+            border: 1px solid rgba(229,9,20,0.4);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon { font-size: 18px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .form-header, .form-body, .form-actions { padding-left: 20px; padding-right: 20px; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .span-2 { grid-column: span 1; }
+            .poster-area { grid-template-columns: 1fr; }
+            .poster-preview { width: 100%; height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="logo">MovieFlix</div>
+    <nav class="header-nav">
+        <a href="#">Trang Chủ</a>
+        <a href="#">Phim</a>
+        <a href="#">Quản Lý</a>
+    </nav>
+    <div class="header-right">
+        <a href="#" class="btn-back">
+            ← Quay lại
+        </a>
+    </div>
+</header>
+
+<!-- PAGE -->
+<div class="page">
+    <div class="form-card">
+
+        <!-- CARD HEADER -->
+        <div class="form-header">
+            <div class="form-header-icon">🎬</div>
+            <div>
+                <h1>Thêm Phim Mới</h1>
+                <p>Điền đầy đủ thông tin bên dưới để thêm phim vào hệ thống</p>
+            </div>
+        </div>
+
+        <!-- FORM BODY -->
+        <div class="form-body">
+
+            <!-- THÔNG TIN CƠ BẢN -->
+            <div class="section-title">Thông tin cơ bản</div>
+
+            <div class="field">
+                <label>Tên phim <span class="req">*</span></label>
+                <input type="text" id="title" placeholder="VD: Inception, Avengers: Endgame..." />
+            </div>
+
+            <div class="grid-2" style="margin-top:16px;">
+                <div class="field">
+                    <label>Đạo diễn <span class="req">*</span></label>
+                    <input type="text" id="director" placeholder="Tên đạo diễn" />
+                </div>
+                <div class="field">
+                    <label>Diễn viên</label>
+                    <input type="text" id="cast" placeholder="VD: Tom Hanks, Scarlett Johansson..." />
+                </div>
+            </div>
+
+            <div class="field" style="margin-top:16px;">
+                <label>Mô tả / Nội dung phim</label>
+                <textarea id="description" placeholder="Tóm tắt nội dung phim..."></textarea>
+            </div>
+
+            <!-- PHÂN LOẠI -->
+            <div class="section-title">Phân loại</div>
+
+            <!-- THỂ LOẠI: multi-select -->
+            <div class="field">
+                <label>Thể loại <span class="req">*</span></label>
+                <div class="chip-grid" id="genreChips"></div>
+            </div>
+
+            <!-- QUỐC GIA: single-select -->
+            <div class="field" style="margin-top:16px;">
+                <label>Quốc gia</label>
+                <div class="chip-grid" id="countryChips"></div>
+            </div>
+
+            <!-- NGÔN NGỮ: single-select -->
+            <div class="field" style="margin-top:16px;">
+                <label>Ngôn ngữ</label>
+                <div class="chip-grid" id="languageChips"></div>
+            </div>
+
+            <!-- ĐỘ TUỔI: single-select radio -->
+            <div class="field" style="margin-top:16px;">
+                <label>Giới hạn độ tuổi</label>
+                <div class="chip-grid" id="ageChips"></div>
+            </div>
+
+            <div class="grid-2" style="margin-top:16px;">
+                <div class="field">
+                    <label>Năm phát hành</label>
+                    <input type="number" id="releaseYear" placeholder="VD: 2024" min="1900" max="2100" />
+                </div>
+                <div class="field">
+                    <label>Thời lượng (phút)</label>
+                    <input type="number" id="durationMins" placeholder="VD: 120" min="1" />
+                </div>
+            </div>
+
+            <!-- MEDIA -->
+            <div class="section-title">Media & Link</div>
+
+            <div class="poster-area">
+                <div class="poster-preview" id="posterPreview">
+                    <div class="placeholder-icon">🖼️</div>
+                    <div class="placeholder-text">Xem trước poster</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                    <div class="field">
+                        <label>URL Poster <span class="req">*</span></label>
+                        <input type="url" id="posterUrl" placeholder="https://..." oninput="previewPoster(this.value)" />
+                    </div>
+                    <div class="field">
+                        <label>Link xem phim</label>
+                        <input type="url" id="externalUrl" placeholder="https://..." />
+                    </div>
+                    <div class="field">
+                        <label>Từ khóa (keywords)</label>
+                        <input type="text" id="keywords" placeholder="VD: action, space, time travel..." />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="form-actions">
+            <button class="btn btn-ghost" onclick="resetForm()">Đặt lại</button>
+            <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">
+                <span id="btnText">Thêm Phim</span>
+                <span>＋</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <span class="toast-icon" id="toastIcon">✅</span>
+    <span id="toastMsg">Thêm phim thành công!</span>
+</div>
+
+<script>
+    // ===== ONE-HOT DATA (exact values from OneHotEncoder.java) =====
+    const GENRES = [
+        "Hành động","Kinh dị","Hài hước","Tình cảm","Phiêu lưu",
+        "Khoa học viễn tưởng","Hoạt hình","Tội phạm","Tâm lý","Gia đình",
+        "Lịch sử","Chiến tranh","Thể thao","Âm nhạc","Kinh điển",
+        "Siêu anh hùng","Sinh tồn","Bí ẩn","Thần thoại","Tài liệu"
+    ];
+
+    const COUNTRIES = [
+        "Mỹ","Hàn Quốc","Nhật Bản","Trung Quốc","Việt Nam",
+        "Anh","Pháp","Ấn Độ","Thái Lan","Hồng Kông",
+        "Đài Loan","Đức","Ý","Tây Ban Nha","Úc",
+        "Canada","Nga","Mexico","Brazil","Thụy Điển",
+        "Đan Mạch","Na Uy","Phần Lan","Hà Lan","Bỉ",
+        "Ba Lan","Thổ Nhĩ Kỳ","Indonesia","Philippines","Malaysia"
+    ];
+
+    const LANGUAGES = [
+        { value: "vi", label: "Tiếng Việt" },
+        { value: "en", label: "Tiếng Anh" },
+        { value: "ko", label: "Tiếng Hàn" },
+        { value: "ja", label: "Tiếng Nhật" },
+        { value: "zh", label: "Tiếng Trung" },
+        { value: "fr", label: "Tiếng Pháp" },
+        { value: "th", label: "Tiếng Thái" },
+        { value: "hi", label: "Tiếng Hindi" },
+        { value: "es", label: "Tiếng Tây Ban Nha" },
+        { value: "de", label: "Tiếng Đức" }
+    ];
+
+    const AGE_RATINGS = ["P", "C13", "C16", "C18"];
+
+    // ===== STATE =====
+    let selectedGenres  = new Set();
+    let selectedCountry  = null;
+    let selectedLanguage = null;
+    let selectedAge      = null;
+
+    // ===== RENDER CHIPS =====
+    function buildGenreChips() {
+        const c = document.getElementById('genreChips');
+        c.innerHTML = GENRES.map(g =>
+            `<span class="chip ${selectedGenres.has(g) ? 'active' : ''}" onclick="toggleGenre('${g}')">${g}</span>`
+        ).join('');
+    }
+
+    function buildCountryChips() {
+        const c = document.getElementById('countryChips');
+        c.innerHTML = COUNTRIES.map(v =>
+            `<span class="chip radio ${selectedCountry === v ? 'active' : ''}" onclick="selectRadio('country','${v}')">${v}</span>`
+        ).join('');
+    }
+
+    function buildLanguageChips() {
+        const c = document.getElementById('languageChips');
+        c.innerHTML = LANGUAGES.map(l =>
+            `<span class="chip radio ${selectedLanguage === l.value ? 'active' : ''}" onclick="selectRadio('language','${l.value}')">${l.label}</span>`
+        ).join('');
+    }
+
+    function buildAgeChips() {
+        const c = document.getElementById('ageChips');
+        c.innerHTML = AGE_RATINGS.map(a =>
+            `<span class="chip radio ${selectedAge === a ? 'active' : ''}" onclick="selectRadio('age','${a}')">${a}</span>`
+        ).join('');
+    }
+
+    function toggleGenre(g) {
+        selectedGenres.has(g) ? selectedGenres.delete(g) : selectedGenres.add(g);
+        buildGenreChips();
+    }
+
+    function selectRadio(type, val) {
+        if (type === 'country')  { selectedCountry  = selectedCountry  === val ? null : val; buildCountryChips(); }
+        if (type === 'language') { selectedLanguage = selectedLanguage === val ? null : val; buildLanguageChips(); }
+        if (type === 'age')      { selectedAge      = selectedAge      === val ? null : val; buildAgeChips(); }
+    }
+
+    // Init
+    buildGenreChips();
+    buildCountryChips();
+    buildLanguageChips();
+    buildAgeChips();
+
+    // ===== POSTER PREVIEW =====
+    function previewPoster(url) {
+        const preview = document.getElementById('posterPreview');
+        if (url && url.startsWith('http')) {
+            preview.innerHTML = `<img src="${url}" onerror="this.parentElement.innerHTML='<div class=\\'placeholder-icon\\'>❌</div><div class=\\'placeholder-text\\'>Không tải được</div>'" />`;
+        } else {
+            preview.innerHTML = `<div class="placeholder-icon">🖼️</div><div class="placeholder-text">Xem trước poster</div>`;
+        }
+    }
+
+    // ===== TOAST =====
+    function showToast(msg, success = true) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg;
+        document.getElementById('toastIcon').textContent = success ? '✅' : '❌';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // ===== RESET =====
+    function resetForm() {
+        ['title','director','cast','description','keywords','releaseYear','durationMins','posterUrl','externalUrl']
+            .forEach(id => document.getElementById(id).value = '');
+        selectedGenres.clear();
+        selectedCountry = selectedLanguage = selectedAge = null;
+        buildGenreChips(); buildCountryChips(); buildLanguageChips(); buildAgeChips();
+        previewPoster('');
+    }
+
+    // ===== SUBMIT =====
+    async function submitForm() {
+        const title     = document.getElementById('title').value.trim();
+        const director  = document.getElementById('director').value.trim();
+        const posterUrl = document.getElementById('posterUrl').value.trim();
+
+        if (!title)                  { showToast('Vui lòng nhập tên phim!', false); return; }
+        if (!director)               { showToast('Vui lòng nhập tên đạo diễn!', false); return; }
+        if (!posterUrl)              { showToast('Vui lòng nhập URL poster!', false); return; }
+        if (selectedGenres.size === 0){ showToast('Vui lòng chọn ít nhất 1 thể loại!', false); return; }
+
+        const payload = [{
+            title,
+            description:  document.getElementById('description').value.trim(),
+            director,
+            cast:         document.getElementById('cast').value.trim(),
+            keywords:     document.getElementById('keywords').value.trim(),
+            country:      selectedCountry  || null,
+            language:     selectedLanguage || null,
+            ageRating:    selectedAge      || null,
+            releaseYear:  parseInt(document.getElementById('releaseYear').value)  || null,
+            durationMins: parseInt(document.getElementById('durationMins').value) || null,
+            posterUrl,
+            externalUrl:  document.getElementById('externalUrl').value.trim(),
+            genreNames:   [...selectedGenres]
+        }];
+
+        const btn     = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        btn.classList.add('loading');
+        btnText.textContent = 'Đang lưu...';
+
+        try {
+            const res = await fetch('/api/movie/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+                },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) { showToast('Thêm phim thành công! 🎉'); resetForm(); }
+            else        { showToast('Lỗi server! Vui lòng thử lại.', false); }
+        } catch (err) {
+            showToast('Không kết nối được server.', false);
+        } finally {
+            btn.classList.remove('loading');
+            btnText.textContent = 'Thêm Phim';
+        }
+    }
+</script>
+</body>
+</html>

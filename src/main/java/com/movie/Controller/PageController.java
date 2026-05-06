@@ -30,4 +30,9 @@ public class PageController {
         return "Evaluation";
     }
 
+    @GetMapping("/add-new-movie")
+    public String showAddNewMoviePage() {
+        return "addMovie";
+    }
+
 }
